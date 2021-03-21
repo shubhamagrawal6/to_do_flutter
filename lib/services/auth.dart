@@ -35,10 +35,21 @@ class Auth {
     }
   }
 
-  Future<String> signOut({String email, String password}) async {
+  Future<String> signOut() async {
     try {
       await auth.signOut();
       return "Successfully Signed Out";
+    } on FirebaseAuthException catch (e) {
+      return e.message;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<String> removeAccount() async {
+    try {
+      await auth.currentUser.delete();
+      return "Account deleted";
     } on FirebaseAuthException catch (e) {
       return e.message;
     } catch (e) {
