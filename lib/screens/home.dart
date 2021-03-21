@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:to_do_flutter/models/todo.dart';
+import 'package:to_do_flutter/screens/loading.dart';
 import 'package:to_do_flutter/services/auth.dart';
 import 'package:to_do_flutter/services/database.dart';
 import 'package:to_do_flutter/widgets/todo_card.dart';
@@ -24,8 +25,10 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("To-Do List"),
+        title: const Text("To-Do List",
+            style: TextStyle(fontWeight: FontWeight.bold)),
         centerTitle: true,
+        backgroundColor: Colors.indigoAccent,
         actions: [
           IconButton(
             key: const ValueKey("signOut"),
@@ -75,7 +78,7 @@ class _HomeState extends State<Home> {
                         });
                       }
                     },
-                  )
+                  ),
                 ],
               ),
             ),
@@ -84,7 +87,7 @@ class _HomeState extends State<Home> {
             height: 20,
           ),
           const Text(
-            "Your To-Dos",
+            "Your To-Do List",
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
@@ -114,9 +117,43 @@ class _HomeState extends State<Home> {
                     );
                   }
                 } else {
-                  return const Center(
-                    child: Text("loading..."),
-                  );
+                  return const Loading();
+                }
+              },
+            ),
+          ),
+          const Text(
+            "Your Completed To-Dos",
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          Expanded(
+            child: StreamBuilder(
+              stream: Database(firestore: widget.firestore)
+                  .streamCompleteTodos(uid: widget.auth.currentUser.uid),
+              builder: (BuildContext context,
+                  AsyncSnapshot<List<TodoModel>> snapshot) {
+                if (snapshot.connectionState == ConnectionState.active) {
+                  if (snapshot.hasData == false) {
+                    return const Center(
+                      child: Text("You don't have any completed To-Dos"),
+                    );
+                  } else {
+                    return ListView.builder(
+                      itemCount: snapshot.data.length,
+                      itemBuilder: (_, index) {
+                        return TodoCard(
+                          firestore: widget.firestore,
+                          uid: widget.auth.currentUser.uid,
+                          todo: snapshot.data[index],
+                        );
+                      },
+                    );
+                  }
+                } else {
+                  return const Loading();
                 }
               },
             ),
