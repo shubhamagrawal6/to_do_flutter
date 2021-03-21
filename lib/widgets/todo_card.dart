@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:to_do_flutter/models/todo.dart';
 import 'package:to_do_flutter/services/database.dart';
 
@@ -44,6 +45,17 @@ class _TodoCardState extends State<TodoCard> {
                 );
               },
             ),
+            IconButton(
+                onPressed: () {
+                  HapticFeedback.lightImpact();
+                  setState(() {
+                    Database(firestore: widget.firestore).removeTodo(
+                      uid: widget.uid,
+                      todoId: widget.todo.todoId,
+                    );
+                  });
+                },
+                icon: const Icon(Icons.delete)),
           ],
         ),
       ),
