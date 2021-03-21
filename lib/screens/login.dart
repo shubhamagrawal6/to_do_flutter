@@ -75,6 +75,7 @@ class _LoginState extends State<Login> {
                   },
                   child: const Text("Sign In"),
                 ),
+                // ignore: deprecated_member_use
                 FlatButton(
                   key: const ValueKey("createAccount"),
                   onPressed: () async {
