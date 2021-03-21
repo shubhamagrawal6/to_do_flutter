@@ -10,7 +10,7 @@ class Loading extends StatelessWidget {
     return Center(
       child: Container(
           padding: const EdgeInsets.all(8),
-          height: 200,
+          height: 100,
           width: 200,
           decoration: BoxDecoration(
               border: Border.all(
