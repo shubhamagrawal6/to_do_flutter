@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:to_do_flutter/screens/error.dart';
 import 'package:to_do_flutter/screens/home.dart';
 import 'package:to_do_flutter/screens/loading.dart';
+import 'package:to_do_flutter/screens/login.dart';
 import 'package:to_do_flutter/services/auth.dart';
 
 // Import the firebase_core plugin
