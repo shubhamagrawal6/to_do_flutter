@@ -23,6 +23,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    final String email = widget.auth.currentUser.email;
     return Scaffold(
       appBar: AppBar(
         title: const Text("To-Do List",
@@ -39,6 +40,32 @@ class _HomeState extends State<Home> {
             },
           )
         ],
+      ),
+      drawer: Drawer(
+        child: ListView(
+          padding: const EdgeInsets.all(0),
+          // ignore: prefer_const_literals_to_create_immutables
+          children: <Widget>[
+            UserAccountsDrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.indigoAccent,
+              ),
+              currentAccountPicture: Image.asset("assets/images/Profile.png"),
+              accountName: Text(email),
+              accountEmail: null,
+            ),
+            ListTile(
+              leading: IconButton(
+                icon: const Icon(Icons.person_remove),
+                onPressed: () {
+                  HapticFeedback.lightImpact();
+                  Auth(auth: widget.auth).removeAccount();
+                },
+              ),
+              title: const Text("Remove your account"),
+            ),
+          ],
+        ),
       ),
       body: Column(
         children: <Widget>[
