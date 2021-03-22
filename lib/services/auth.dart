@@ -56,4 +56,17 @@ class Auth {
       rethrow;
     }
   }
+
+  Future<String> resetPassword({String email}) async {
+    try {
+      await auth.sendPasswordResetEmail(
+        email: email.trim(),
+      );
+      return "Please check e-mail";
+    } on FirebaseAuthException catch (e) {
+      return e.message;
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

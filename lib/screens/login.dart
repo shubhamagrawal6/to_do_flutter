@@ -100,6 +100,33 @@ class _LoginState extends State<Login> {
                     "Register",
                     style: TextStyle(decoration: TextDecoration.underline),
                   ),
+                ),
+                // ignore: deprecated_member_use
+                FlatButton(
+                  key: const ValueKey("forgotPassword"),
+                  onPressed: () async {
+                    final String retVal =
+                        await Auth(auth: widget.auth).resetPassword(
+                      email: _emailController.text,
+                    );
+                    HapticFeedback.lightImpact();
+                    if (retVal == "Success") {
+                      _emailController.clear();
+                      _passwordController.clear();
+                    } else {
+                      Scaffold.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(retVal),
+                        ),
+                      );
+                    }
+                  },
+                  child: const Text(
+                    "Forgot Password?",
+                    style: TextStyle(
+                        decoration: TextDecoration.underline,
+                        color: Colors.indigoAccent),
+                  ),
                 )
               ],
             );
